@@ -88,7 +88,7 @@ if prompt := st.chat_input("What is up?"):
         for _, video_url, just_transcript, chunk_text in relevant_chunks:
             # Embed the video with timestamp
             st.markdown(f'<iframe width="444" height="250" src="{video_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
-            with st.expander(just_transcript[:50] + " ... (click to show full snippet)"):
+            with st.expander(just_transcript[:300] + " ... (click to show full snippet)"):
                 st.markdown(chunk_text)
             st.markdown("")  # Add a separator for clarity
 
@@ -96,10 +96,7 @@ if prompt := st.chat_input("What is up?"):
     raw_context = "\n".join([chunk[2] for chunk in relevant_chunks])
     context = "The top 50 most popular YC YouTube videos have been vector embedded for RAG purposes. Here are the most relevant snippets as related to the user's query:\n\n" + raw_context
 
-    assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAnswer the user's query as if you were a partner at Y Combinator"
-
-    st.write('raw dump')
-    st.write(assistant_prompt)
+    assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAnswer the user's query like a partner at Y Combinator would"
 
     with st.chat_message("assistant"):
         stream = client.chat.completions.create(
