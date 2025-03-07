@@ -116,7 +116,7 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 # Waitlist Form (moved to the sidebar)
-st.sidebar.subheader("Join our waitlist for an AI startup coach a la YC! Part-CRM, part-progress tracker, get after it you mad lad!")
+st.sidebar.subheader("Join our waitlist for a YC-minded AI startup coach!\n Part-CRM, part-progress tracker, get after it you mad lad!")
 
 with st.sidebar.form(key='waitlist_form'):
     name = st.text_input("Your Name")
