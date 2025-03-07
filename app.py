@@ -68,7 +68,7 @@ if prompt := st.chat_input("What is up?"):
     # Retrieve relevant chunks
     relevant_chunks = retrieve_relevant_chunks(prompt, video_data)
     raw_context = "\n".join(relevant_chunks)
-    context = "The top 50 most popular YC YouTube videos have been vector embedded for RAG purposes. Here are the most relevant snippits as related to the user's query:\n" + raw_context
+    context = "The top 50 most popular YC YouTube videos have been vector embedded for RAG purposes. Here are the most relevant snippets as related to the user's query:\n\n" + raw_context
 
     with st.chat_message("user"):
         st.markdown(prompt)
