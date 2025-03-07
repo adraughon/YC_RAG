@@ -89,7 +89,7 @@ if prompt := st.chat_input("What is up?"):
             col1.markdown(f'<iframe height="200" src="{video_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
             with col2.expander('Show transcript:'):
                 st.markdown(chunk_text)
-            st.markdown("---")  # Add a separator for clarity
+            st.markdown("")  # Add a separator for clarity
 
     # Create the assistant's prompt
     raw_context = "\n".join([chunk[2] for chunk in relevant_chunks])
