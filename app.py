@@ -38,7 +38,7 @@ def encode_query(query):
         input=query
     )
     # Extract the embedding from the response
-    embedding = np.array(response['data'][0]['embedding'])
+    embedding = np.array(response.data[0].embedding)
     return embedding
 
 st.title("ChatGPT-like clone")
