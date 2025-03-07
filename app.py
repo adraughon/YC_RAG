@@ -1,17 +1,19 @@
 import json
 import numpy as np
-from openai import OpenAI
+import openai
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+
 import streamlit as st
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the JSON data
-with open('path_to_your_file.json', 'r') as f:
+with open('YC_Transcripts_Embedded.json', 'r') as f: # big file
     video_data = json.load(f)
 
 # Function to calculate cosine similarity and retrieve relevant chunks
 def retrieve_relevant_chunks(user_query, video_data, top_k=3):
-    # You would need to encode the user_query into an embedding as well.
-    query_embedding = encode_query(user_query)  # Define your encoding method
+    # Encode the user_query into an embedding
+    query_embedding = encode_query(user_query)
     
     relevant_chunks = []
     
@@ -25,16 +27,18 @@ def retrieve_relevant_chunks(user_query, video_data, top_k=3):
     relevant_chunks.sort(key=lambda x: x[0], reverse=True)
     return [chunk[1] for chunk in relevant_chunks[:top_k]]
 
-# Placeholder encoding function for the query - replace with actual embedding method
+# Function to encode the query using OpenAI's text-embedding-3-small
 def encode_query(query):
-    # This function should transform the query into the same embedding space as the transcripts
-    # You can use OpenAI embeddings API or any other method you prefer
-    # Here we return a dummy zero vector for illustration
-    return np.zeros(768)  # Adjust size according to your embeddings
+    response = openai.Embedding.create(
+        model="text-embedding-3-small",
+        input=query
+    )
+    # Extract the embedding from the response
+    embedding = np.array(response['data'][0]['embedding'])
+    return embedding
 
 st.title("ChatGPT-like clone")
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
@@ -59,13 +63,16 @@ if prompt := st.chat_input("What is up?"):
     assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
 
     with st.chat_message("assistant"):
-        stream = client.chat.completions.create(
+        stream = openai.ChatCompletion.create(
             model=st.session_state["openai_model"],
             messages=[
                 {"role": "user", "content": assistant_prompt}
             ],
             stream=True,
         )
-        response = st.write_stream(stream)
+        response = ""
+        for chunk in stream:
+            response += chunk['choices'][0]['delta'].get('content', '')
+        st.markdown(response)
     
     st.session_state.messages.append({"role": "assistant", "content": response})
