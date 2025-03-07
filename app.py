@@ -63,6 +63,8 @@ if prompt := st.chat_input("What is up?"):
     relevant_chunks = retrieve_relevant_chunks(prompt, video_data)
     context = "\n".join(relevant_chunks)
 
+    st.markdown('context: ',context)
+
     # Create the assistant's prompt
     assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
 
