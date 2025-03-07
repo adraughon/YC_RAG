@@ -19,18 +19,25 @@ with open('YC_Transcripts_Embedded.json', 'r') as f: # big file
 def retrieve_relevant_chunks(user_query, video_data, top_k=3):
     # Encode the user_query into an embedding
     query_embedding = encode_query(user_query)
-    
+
     relevant_chunks = []
-    
+
     for video in video_data:
-        for transcript in video['transcript']:
-            embedding = np.array(transcript['embedding']).reshape(1, -1)
+        video_title = video["title"]
+        for transcript in video["transcript"]:
+            embedding = np.array(transcript["embedding"]).reshape(1, -1)
             similarity = cosine_similarity(query_embedding.reshape(1, -1), embedding)
-            relevant_chunks.append((similarity[0][0], transcript['text_chunk']))
-    
+            relevant_chunks.append(
+                (
+                    similarity[0][0], 
+                    f"**{video_title}**\nTimestamp: {transcript['timestamp']}\n\n{transcript['text_chunk']}\n"
+                )
+            )
+
     # Sort by similarity score and retrieve the top_k chunks
     relevant_chunks.sort(key=lambda x: x[0], reverse=True)
     return [chunk[1] for chunk in relevant_chunks[:top_k]]
+
 
 # Function to encode the query using OpenAI's text-embedding-3-small
 def encode_query(query):
@@ -61,7 +68,7 @@ if prompt := st.chat_input("What is up?"):
     # Retrieve relevant chunks
     relevant_chunks = retrieve_relevant_chunks(prompt, video_data)
     raw_context = "\n".join(relevant_chunks)
-    context = "The top 50 most popular YC YouTube videos have been vector embedded for RAG purposes. Here are the most relevant snippits as related to the user's query:" + raw_context
+    context = "The top 50 most popular YC YouTube videos have been vector embedded for RAG purposes. Here are the most relevant snippits as related to the user's query:\n" + raw_context
 
     with st.chat_message("user"):
         st.markdown(prompt)
