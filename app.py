@@ -57,14 +57,15 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
+    
     # Retrieve relevant chunks
     relevant_chunks = retrieve_relevant_chunks(prompt, video_data)
     context = "\n".join(relevant_chunks)
 
-    st.markdown('context: '+context)
+    with st.chat_message("user"):
+        st.markdown(prompt)
+        st.markdown('### RAG-Fetched Context:')
+        st.markdown(context)
 
     # Create the assistant's prompt
     assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
