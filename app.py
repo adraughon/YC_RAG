@@ -1,5 +1,6 @@
 import json
 import numpy as np
+import openai
 from openai import OpenAI
 import streamlit as st
 
@@ -69,7 +70,7 @@ if prompt := st.chat_input("What is up?"):
     assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
 
     with st.chat_message("assistant"):
-        stream = OpenAI.ChatCompletion.create(
+        stream = openai.ChatCompletion.create(
             model=st.session_state["openai_model"],
             messages=[
                 {"role": "user", "content": assistant_prompt}
