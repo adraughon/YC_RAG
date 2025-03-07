@@ -60,7 +60,8 @@ def convert_timestamp_to_seconds(timestamp):
         return parts[0] * 60 + parts[1]
     return 0  # Default if format is unexpected
 
-st.title("ChatGPT-like clone")
+st.title(":blue[Yummy Cake] :cake:")
+st.subheader("_Retrieval Augmented Generation (RAG) using the top 50 Y Combinator YouTube videos_")
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
