@@ -61,7 +61,7 @@ def convert_timestamp_to_seconds(timestamp):
     return 0  # Default if format is unexpected
 
 st.title(":orange[Yummy Cake] :cake:")
-st.subheader("_Retrieval Augmented Generation (RAG) using the top 50 Y Combinator YouTube videos_")
+st.markdown("**Retrieval Augmented Generation (RAG) using the top 50 Y Combinator YouTube videos**")
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
