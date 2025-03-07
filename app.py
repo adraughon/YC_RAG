@@ -79,7 +79,7 @@ if prompt := st.chat_input("What is up?"):
         )
         response = ""
         for chunk in stream:
-            response += chunk['choices'][0]['delta'].get('content', '')
+            response += chunk.choices[0].delta.content
         st.markdown(response)
     
     st.session_state.messages.append({"role": "assistant", "content": response})
