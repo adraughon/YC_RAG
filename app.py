@@ -95,7 +95,7 @@ if prompt := st.chat_input("What is up?"):
     raw_context = "\n".join([chunk[2] for chunk in relevant_chunks])
     context = "The top 50 most popular YC YouTube videos have been vector embedded for RAG purposes. Here are the most relevant snippets as related to the user's query:\n\n" + raw_context
 
-    assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
+    assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAnswer the user's query as if you were a partner at Y Combinator"
 
     st.write('raw dump')
     st.write(assistant_prompt)
