@@ -44,6 +44,7 @@ def retrieve_relevant_chunks(user_query, video_data, top_k=3):
                 (
                     similarity[0][0],
                     embedded_url,
+                    transcript['text_chunk'],
                     f"**{video_title}**\nTimestamp: {timestamp}\n\n{transcript['text_chunk']}\n"
                 )
             )
@@ -84,10 +85,10 @@ if prompt := st.chat_input("What is up?"):
         st.markdown('### RAG-Fetched Context:')
         
         # Display video first, then the relevant context
-        for _, video_url, chunk_text in relevant_chunks:
+        for _, video_url, just_transcript, chunk_text in relevant_chunks:
             # Embed the video with timestamp
             st.markdown(f'<iframe width="444" height="250" src="{video_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
-            with st.expander(chunk_text[:30] + " ... (click to show full snippet)"):
+            with st.expander(just_transcript[:50] + " ... (click to show full snippet)"):
                 st.markdown(chunk_text)
             st.markdown("")  # Add a separator for clarity
 
