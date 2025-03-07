@@ -115,15 +115,16 @@ if prompt := st.chat_input("What is up?"):
     
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Waitlist Form (moved to the end)
-st.subheader("Join our waitlist for an AI startup coach a la YC! Part-CRM, part-progress tracker, get after it you mad lad!")
+# Waitlist Form (moved to the sidebar)
+st.sidebar.subheader("Join our waitlist for an AI startup coach a la YC! Part-CRM, part-progress tracker, get after it you mad lad!")
 
-with st.form(key='waitlist_form'):
+with st.sidebar.form(key='waitlist_form'):
     name = st.text_input("Your Name")
     email = st.text_input("Your Email")
     submit_button = st.form_submit_button("Join Waitlist")
 
     if submit_button:
         # Process the submission (you could save the data to a file, database, etc.)
-        st.success(f"Thanks for signing up, {name}! We'll notify you once the tool is available!")
+        st.sidebar.success(f"Thanks for signing up, {name}! We'll notify you once the tool is available!")
         # Here, you could add logic to save the data for further processing, e.g., appending to a waitlist file
+
