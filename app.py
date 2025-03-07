@@ -97,6 +97,9 @@ if prompt := st.chat_input("What is up?"):
 
     assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
 
+    st.write('raw dump')
+    st.write(assistant_prompt)
+
     with st.chat_message("assistant"):
         stream = client.chat.completions.create(
             model=st.session_state["openai_model"],
