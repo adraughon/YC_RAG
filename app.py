@@ -80,7 +80,8 @@ if prompt := st.chat_input("What is up?"):
         response = ""
         for chunk in stream:
             if hasattr(chunk.choices[0].delta, "content"):
-                response += chunk.choices[0].delta.content
+                if chunk.choices[0].delta.content is not None:
+                    response += chunk.choices[0].delta.content
         st.markdown(response)
     
     st.session_state.messages.append({"role": "assistant", "content": response})
