@@ -23,7 +23,7 @@ def encode_query(query):
     embedding = np.array(response.data[0].embedding)
     return embedding
 
-# Function to retrieve relevant chunks and embed videos
+# Function to retrieve relevant chunks and generate video links
 def retrieve_relevant_chunks(user_query, video_data, top_k=3):
     query_embedding = encode_query(user_query)
     relevant_chunks = []
@@ -36,7 +36,9 @@ def retrieve_relevant_chunks(user_query, video_data, top_k=3):
             similarity = cosine_similarity(query_embedding.reshape(1, -1), embedding)
             timestamp = transcript["timestamp"]
             timestamp_seconds = convert_timestamp_to_seconds(timestamp)
-            embedded_url = f"{video_url}&t={timestamp_seconds}s"
+            
+            # Construct embedded video URL
+            embedded_url = f"https://www.youtube.com/embed/{video_url.split('v=')[1].split('&')[0]}?start={timestamp_seconds}"
 
             relevant_chunks.append(
                 (
@@ -49,7 +51,7 @@ def retrieve_relevant_chunks(user_query, video_data, top_k=3):
     relevant_chunks.sort(key=lambda x: x[0], reverse=True)
     return relevant_chunks[:top_k]
 
-# Function to convert timestamp format (mm:ss or hh:mm:ss) to total seconds
+# Convert timestamp format (hh:mm:ss or mm:ss) to total seconds
 def convert_timestamp_to_seconds(timestamp):
     parts = list(map(int, timestamp.split(":")))
     if len(parts) == 3:
@@ -82,7 +84,8 @@ if prompt := st.chat_input("What is up?"):
         
         # Display video first, then the relevant context
         for _, video_url, chunk_text in relevant_chunks:
-            st.video(video_url)
+            # Embed the video with timestamp
+            st.markdown(f'<iframe height="200" src="{video_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
             st.markdown(chunk_text)
             st.markdown("---")  # Add a separator for clarity
 
