@@ -1,9 +1,11 @@
 import json
 import numpy as np
-import openai
+from openai import OpenAI
 import streamlit as st
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+openai_api_key = st.secrets["OPENAI_API_KEY"]
+
+client = OpenAI(api_key = openai_api_key)
 
 import streamlit as st
 from sklearn.metrics.pairwise import cosine_similarity
@@ -31,7 +33,7 @@ def retrieve_relevant_chunks(user_query, video_data, top_k=3):
 
 # Function to encode the query using OpenAI's text-embedding-3-small
 def encode_query(query):
-    response = openai.Embedding.create(
+    response = client.embeddings.create(
         model="text-embedding-3-small",
         input=query
     )
