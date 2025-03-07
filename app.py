@@ -56,8 +56,7 @@ if prompt := st.chat_input("What is up?"):
     context = "\n".join(relevant_chunks)
 
     # Create the assistant's prompt
-    assistant_prompt = f"Context:\n{context}\n
-User: {prompt}\nAssistant:"
+    assistant_prompt = f"Context:\n{context}\nUser: {prompt}\nAssistant:"
 
     with st.chat_message("assistant"):
         stream = client.chat.completions.create(
