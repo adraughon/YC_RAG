@@ -86,7 +86,7 @@ if prompt := st.chat_input("What is up?"):
         # Display video first, then the relevant context
         for _, video_url, chunk_text in relevant_chunks:
             # Embed the video with timestamp
-            st.markdown(f'<iframe height="300" src="{video_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
+            st.markdown(f'<iframe width="444" height="250" src="{video_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
             with st.expander('Show transcript:'):
                 st.markdown(chunk_text)
             st.markdown("")  # Add a separator for clarity
